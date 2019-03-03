@@ -1,0 +1,101 @@
+@charset "UTF-8";
+
+.container {
+	display: none;
+}
+
+.container {
+	border-radius: 5px;
+	position: relative;
+	width: 20px;
+	height: 20px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 22px;
+	background-color: #00284d;
+	user-select: none;
+}
+
+.container input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+.container input:checked+.checkmark {
+	position: absolute;
+	left: 6px;
+	top: 2px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	transform: rotate(45deg);
+}
+
+input[type=submit] {
+	background-color: #00284d;
+	color: white;
+	padding: 5px 18px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	border: none;
+	margin: 5px 0px;
+}
+
+input[type=submit]:hover {
+	background-color: #cce6ff;
+	color: black;
+}
+
+#someInput {
+	display: none;
+}
+
+table {
+	border-radius: 5px;
+	border-collapse: collapse;
+	width: 50%;
+}
+
+table, td, th {
+	border: 1px solid black;
+}
+
+td, th {
+	padding: 5px;
+}
+
+tr {
+	background-color: #e6f3ff;
+}
+
+tr:nth-child(even) {
+	background-color: #cce6ff;
+}
+
+th {
+	color: white;
+	background-color: #00284d;
+}
+
+.topLink:link, .topLink:visited {
+	background-color: #00284d;
+	color: white;
+	padding: 5px 18px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+}
+
+.topLink:hover, .topLink:active {
+	background-color: #cce6ff;
+	color: black;
+}
+
+.menu {
+	padding-bottom: 5px;
+}

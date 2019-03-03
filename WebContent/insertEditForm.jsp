@@ -8,10 +8,10 @@
 </head>
 <body>
 	 <c:if test="${userFromDb != null}">
-            <form action="updateProcessing" method="get">
+            <form action="/servlet/updateProcessing" method="get">
         </c:if>
         <c:if test="${userFromDb == null}">
-            <form action="addProcessing" method="get">
+            <form action="/servlet/addProcessing" method="get">
           </c:if>
 		<c:if test="${userFromDb != null}">
 			<input type="hidden" name="userId" value="<c:out value='${userFromDb.id}' />"/> 

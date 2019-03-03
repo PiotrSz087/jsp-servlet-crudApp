@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -107,32 +109,18 @@ public class UserDao {
 		return st;
 	}
 
-	private void close(Connection conn, Statement statement, ResultSet rs) throws SQLException {
-		if (rs != null) {
-			rs.close();
-		}
-
-		if (statement != null) {
-			statement.close();
-		}
-
-		if (conn != null) {
-			conn.close();
-		}
-	}
-
 	public User getUser(Long id) throws SQLException {
 		User user = new User();
 		Connection conn = null;
 		PreparedStatement statement = null;
 		ResultSet rs = null;
-		
+
 		try {
 			conn = datasource.getConnection();
 			statement = conn.prepareStatement("select * from users where id = ?");
 			statement.setLong(1, id);
 			rs = statement.executeQuery();
-			
+
 			while (rs.next()) {
 				user.setId(id);
 				user.setFirstName(rs.getString("firstName"));
@@ -145,5 +133,41 @@ public class UserDao {
 			close(conn, statement, rs);
 		}
 		return user;
+	}
+
+	public Map<String, String> getNamesEmailsFromDb(String recipients) throws SQLException {
+		Map<String, String> mapRecipents = new HashMap<String, String>();
+		Connection conn = null;
+		PreparedStatement statement = null;
+		ResultSet rs = null;
+
+		try {
+			conn = datasource.getConnection();
+			statement = conn.prepareStatement(String.format("select * from users where id in (%s)", recipients));
+			rs = statement.executeQuery();
+
+			while (rs.next()) {
+				mapRecipents.put(rs.getString("email"), rs.getString("firstName"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, statement, rs);
+		}
+		return mapRecipents;
+	}
+
+	private void close(Connection conn, Statement statement, ResultSet rs) throws SQLException {
+		if (rs != null) {
+			rs.close();
+		}
+
+		if (statement != null) {
+			statement.close();
+		}
+
+		if (conn != null) {
+			conn.close();
+		}
 	}
 }
