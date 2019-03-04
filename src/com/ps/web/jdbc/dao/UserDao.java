@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import com.ps.web.jdbc.model.EmailAccount;
 import com.ps.web.jdbc.model.User;
 
 public class UserDao {
@@ -19,6 +20,30 @@ public class UserDao {
 
 	public UserDao(DataSource datasource) {
 		this.datasource = datasource;
+	}
+	
+	public EmailAccount getEmailAccountInf() throws Exception {
+		EmailAccount ema = new EmailAccount();
+		
+		Connection conn = null;
+		PreparedStatement statement = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = datasource.getConnection();
+			statement = conn.prepareStatement("select * from emaccount where id = 1");
+			rs = statement.executeQuery();
+
+			while (rs.next()) {
+				ema.setAddress(rs.getString("address"));
+				ema.setPassword(rs.getString("password"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, statement, rs);
+		}
+		return ema;
 	}
 
 	public List<User> showListOfUsers() throws Exception {

@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-//import org.apache.catalina.tribes.util.Arrays;
-
 import com.ps.web.jdbc.dao.UserDao;
 import com.ps.web.jdbc.model.User;
 

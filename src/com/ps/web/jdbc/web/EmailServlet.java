@@ -18,6 +18,7 @@ import org.apache.catalina.tribes.util.Arrays;
 import com.ps.web.jdbc.api.EmailSendApi;
 import com.ps.web.jdbc.dao.UserDao;
 import com.ps.web.jdbc.model.Email;
+import com.ps.web.jdbc.model.EmailAccount;
 
 @WebServlet("/emailSender/*")
 public class EmailServlet extends HttpServlet {
@@ -65,15 +66,16 @@ public class EmailServlet extends HttpServlet {
 	}
 	
 	private void emailProcessing(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
+			throws Exception {
 
 		if (request.getParameter("id").length() >= 1) {
 			String id = request.getParameter("id");
 			String subject = request.getParameter("subject");
 			String message = request.getParameter("message");
 			Map<String, String> mapOfRecipients = userDao.getNamesEmailsFromDb(id);
+			EmailAccount ema = userDao.getEmailAccountInf();
 			EmailSendApi em = new EmailSendApi();
-			em.sendEmail(new Email(subject, message, mapOfRecipients));
+			em.sendEmail(new Email(subject, message, mapOfRecipients), ema);
 		}
 
 		response.sendRedirect("/servlet");

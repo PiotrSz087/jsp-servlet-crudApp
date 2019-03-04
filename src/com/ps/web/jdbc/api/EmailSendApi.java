@@ -13,17 +13,16 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.ps.web.jdbc.model.Email;
+import com.ps.web.jdbc.model.EmailAccount;
 
 public class EmailSendApi {
 
-	public String sendEmail(Email em) throws SQLException {
+	public String sendEmail(Email em, EmailAccount ema) throws SQLException {
 		Map<String, String> mapRecipents = em.getRecipients();
 		String subject = em.getSubject();
 		String text = em.getMessage();
-
-//		set gmail user and password from account witch is used to send email
-		String user = "testjava922@gmail.com";
-		String password = "javaT124O32";
+		String user = ema.getAddress();
+		String password = ema.getPassword();
 		
 		Properties properties = System.getProperties();
 		properties.put("mail.transport.protocol", "smtps");
