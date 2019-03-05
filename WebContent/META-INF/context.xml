@@ -3,8 +3,8 @@
 			name="jdbc/userTracker" 
 			auth="Container" 
 			type="javax.sql.DataSource"
-			username=""
-			password=""
+			username="sda"
+			password="sda123"
 			driverClassName="com.mysql.jdbc.Driver"
 			url="jdbc:mysql://localhost:3306/userTracker"/>
 </Context>

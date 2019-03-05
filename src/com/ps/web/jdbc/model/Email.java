@@ -1,29 +1,18 @@
 package com.ps.web.jdbc.model;
 
+import java.util.Map;
+
 public class Email {
-	private String name;
-	private String email;
 	private String subject;
 	private String message;
+	private Map<String, String> recipients;
 
-	public Email() {
+	
 
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public Email(String subject, String message, Map<String, String> recipients) {
+		this.subject = subject;
+		this.message = message;
+		this.recipients = recipients;
 	}
 
 	public String getSubject() {
@@ -42,4 +31,12 @@ public class Email {
 		this.message = message;
 	}
 
+	public Map<String, String> getRecipients() {
+		return recipients;
+	}
+
+	public void setRecipients(Map<String, String> recipients) {
+		this.recipients = recipients;
+	}
+	
 }

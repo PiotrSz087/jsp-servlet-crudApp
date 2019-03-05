@@ -16,14 +16,14 @@ import javax.sql.DataSource;
 import com.ps.web.jdbc.dao.UserDao;
 import com.ps.web.jdbc.model.User;
 
-@WebServlet("/")
+@WebServlet({"/servlet/", "/servlet/*"})
 public class UserServlet extends HttpServlet {
 	/**
 	 * Servlet implementation class UserCrud to run with all links in the .jsp pages
 	 * work properly just change path from "/jsp-servlet-crudApp" to "/" in tomcat
 	 * server.xml file
 	 */
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Resource(name = "jdbc/userTracker")
@@ -35,34 +35,35 @@ public class UserServlet extends HttpServlet {
 	public void init() throws ServletException {
 		userDao = new UserDao(datasource);
 	}
-	
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
+	}
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		try { 
 
-		try {
-			String path = request.getServletPath();
-
-			switch (path) {
-			case "/list":
+			StringBuilder st = new StringBuilder().append(request.getServletPath()).append(request.getPathInfo());
+			switch (st.toString()) {
+			case "/servlet/list":
 				showListOfUsers(request, response);
 				break;
-			case "/insert":
+			case "/servlet/insert":
 				showAddForm(request, response);
 				break;
-			case "/update":
+			case "/servlet/update":
 				showUpdateForm(request, response);
 				break;
-			case "/addProcessing":
+			case "/servlet/addProcessing":
 				insertUser(request, response);
 				break;
-			case "/updateProcessing":
+			case "/servlet/updateProcessing":
 				updateUser(request, response);
 				break;
-			case "/delete":
+			case "/servlet/delete":
 				deleteUser(request, response);
-				break;
-			case "/email":
-				showEmailForm(request, response);
 				break;
 			default:
 				showListOfUsers(request, response);
@@ -73,25 +74,16 @@ public class UserServlet extends HttpServlet {
 		}
 	}
 
-	private void showEmailForm(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
-		Long id = Long.parseLong(request.getParameter("itemId"));
-		User user = userDao.getUser(id);
-		request.setAttribute("userFromDbToEmail", user);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/emailForm.jsp");
-		dispatcher.forward(request, response);
-
-	}
-	
-	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	private void updateUser(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
 		User user = new User();
 		user.setId(Long.parseLong(request.getParameter("userId")));
 		user.setFirstName(request.getParameter("firstName"));
 		user.setLastName(request.getParameter("lastName"));
 		user.setEmail(request.getParameter("email"));
-		
+
 		Boolean check = userDao.updateUserInfo(user);
-		
+
 		if (check) {
 			request.setAttribute("info", "User update succesfully");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/list");
@@ -99,32 +91,33 @@ public class UserServlet extends HttpServlet {
 		}
 	}
 
-	private void showUpdateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	private void showUpdateForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
 		Long id = Long.parseLong(request.getParameter("itemId"));
 		User user = userDao.getUser(id);
 		request.setAttribute("userFromDb", user);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/insertEditForm.jsp");
 		dispatcher.forward(request, response);
-		
+
 	}
 
-	private void showAddForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void showAddForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/insertEditForm.jsp");
-				dispatcher.forward(request, response);
-		
+		dispatcher.forward(request, response);
+
 	}
 
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Long id = Long.parseLong(request.getParameter("itemId"));
-		 
 		Boolean check = userDao.removeItem(id);
-		
+
 		if (check) {
 			request.setAttribute("info", "Item successful deleted");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/list");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/servlet/list");
 			dispatcher.forward(request, response);
 		}
-		
+
 	}
 
 	private void insertUser(HttpServletRequest request, HttpServletResponse response) throws Exception {

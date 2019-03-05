@@ -8,14 +8,12 @@
 <title>Send email here</title>
 </head>
 <body>
-	<c:if test="${userFromDbToEmail != null}">
-		<form action="emailSender" method="post">
-			<input type="hidden" name="email" value="<c:out value='${userFromDbToEmail.email}' />"/> 
-			<input type="hidden" name="name" value="<c:out value='${userFromDbToEmail.firstName}' />"/>
+		<form action="/emailSender/emailProceed" method="post">
+			<input type="hidden" name="id" value="<c:out value='${ids}' />"/>
 			<input type="text" name="subject" value="Enter subject here" /><br>
 			<textarea rows="5" cols="20" name="message">Enter text message here...</textarea>
 			<br> <input type="submit" value="Send">
 		</form>
-	</c:if>
+	
 </body>
 </html>
